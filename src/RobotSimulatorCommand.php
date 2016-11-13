@@ -29,18 +29,18 @@ class RobotSimulatorCommand extends Command
         list($x, $y, $facing) = array_map('trim', explode(',', $placement));
         $myRobot = new MyRobot(intval($x), intval($y), new Facing($facing));
 
-        $output->writeln('The robot has been placed at: ' . $myRobot->report());
+        $output->writeln('<info>The robot has been placed at: ' . $myRobot->report() . '</info>');
         $output->writeln('Now feel free to issue any of the following commands.');
         $output->writeln([
-            '1) PLACE [x],[y],[FACING] (e.g. PLACE 2,3,EAST)',
-            '2) MOVE',
-            '3) LEFT',
-            '4) RIGHT',
-            '5) REPORT'
+            '<comment>1) PLACE [x],[y],[FACING] (e.g. PLACE 2,3,EAST)</comment>',
+            '<comment>2) MOVE</comment>',
+            '<comment>3) LEFT</comment>',
+            '<comment>4) RIGHT</comment>',
+            '<comment>5) REPORT</comment>'
         ]);
         $output->writeln([
             'You can issue a single command, or a string of commands separated by semi-colon.',
-            'For example: LEFT;LEFT;MOVE;REPORT',
+            'For example: <comment>LEFT;LEFT;MOVE;REPORT</comment>',
             'REPORT command is not required as the position of the robot will be printed after every command.'
         ]);
 
@@ -49,16 +49,21 @@ class RobotSimulatorCommand extends Command
             $command = $helper->ask($input, $output, $commandQuestion);
 
             $commands = array_map('trim', explode(';', $command));
+            $result = array();
+
             foreach ($commands as $command) {
                 try {
                     $this->executeCommand($command, $myRobot);
-                    $output->writeln('The robot is now at: ' . $myRobot->report());
+                    $result[] = '<comment>' . $command . '</comment> - <info>Successful!</info>';
                 } catch (\Exception $exp) {
-                    $output->writeln('<error>' . $exp->getMessage() . '</error>');
+                    $result[] = '<comment>' . $command . '</comment> - <error>' . $exp->getMessage() . '</error>';
                 }
             }
 
-            $continueSession = new ConfirmationQuestion('Do you want to continue (Y/n)? ');
+            $output->writeln($result);
+            $output->writeln('<info>The robot is now at: ' . $myRobot->report() . '</info>');
+
+            $continueSession = new ConfirmationQuestion('<question>Do you want to continue (Y/n)? </question>');
             $ifContinue = $helper->ask($input, $output, $continueSession);
         } while ($ifContinue);
     }
