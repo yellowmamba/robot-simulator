@@ -19,6 +19,9 @@ class MyRobot implements RobotInterface
         $this->place($x, $y, $facing);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function place($x, $y, FacingInterface $facing)
     {
         if ($x < 0 || $x > 5 || $y < 0 || $y > 5) {
@@ -30,6 +33,9 @@ class MyRobot implements RobotInterface
         $this->facing = $facing;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function move()
     {
         $facing = $this->facing->getCurrentFacing();
@@ -74,16 +80,25 @@ class MyRobot implements RobotInterface
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function left()
     {
         $this->facing->prevFacing();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function right()
     {
         $this->facing->nextFacing();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function report()
     {
         return $this->x . ',' . $this->y . ',' . strtoupper($this->facing->getCurrentFacing());

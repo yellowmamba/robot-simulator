@@ -23,6 +23,8 @@ class RobotSimulatorCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $helper = $this->getHelper('question');
+
+        // question that helps initialise the robot
         $question = new Question('Please place the robot (defaults to 0,0,NORTH): ', '0,0,NORTH');
         $placement = $helper->ask($input, $output, $question);
 
@@ -44,6 +46,7 @@ class RobotSimulatorCommand extends Command
             'REPORT command is not required as the position of the robot will be printed after every command.'
         ]);
 
+        // until being instructed otherwise, keep the game on
         do {
             $commandQuestion = new Question('Please issue a command (defaults to REPORT): ', 'REPORT');
             $command = $helper->ask($input, $output, $commandQuestion);
@@ -51,6 +54,7 @@ class RobotSimulatorCommand extends Command
             $commands = array_map('trim', explode(';', $command));
             $result = array();
 
+            // break down user input and execute each command and prepare output.
             foreach ($commands as $command) {
                 try {
                     $this->executeCommand($command, $myRobot);
@@ -63,6 +67,7 @@ class RobotSimulatorCommand extends Command
             $output->writeln($result);
             $output->writeln('<info>The robot is now at: ' . $myRobot->report() . '</info>');
 
+            // ask the user if they want to end the game
             $continueSession = new ConfirmationQuestion('<question>Do you want to continue (Y/n)? </question>');
             $ifContinue = $helper->ask($input, $output, $continueSession);
         } while ($ifContinue);

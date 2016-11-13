@@ -12,6 +12,7 @@ class Facing implements FacingInterface
 
     public function __construct($facing = null)
     {
+        // orde is important so it allows automatic pickup.
         $this->directions = array(
             'north' => 'north',
             'east' => 'east',
@@ -32,11 +33,19 @@ class Facing implements FacingInterface
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getCurrentFacing()
     {
         return $this->currentFacing;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * If the current facing is the last in the list, then start over.
+     */
     public function nextFacing()
     {
         $next = next($this->directions);
@@ -50,6 +59,11 @@ class Facing implements FacingInterface
         return $this->currentFacing;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * If the current facing is the first in the list, then start again from the last.
+     */
     public function prevFacing()
     {
         $prev = prev($this->directions);
