@@ -4,5 +4,8 @@
     },
     "autoload": {
         "psr-4": {"Rea\\": "src/"}
+    },
+    "require": {
+        "symfony/console": "~3.0"
     }
 }
