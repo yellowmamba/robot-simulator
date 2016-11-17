@@ -29,6 +29,7 @@ class RobotSimulatorCommand extends Command
         $placement = $helper->ask($input, $output, $question);
 
         list($x, $y, $facing) = array_map('trim', explode(',', $placement));
+        $facing = strtolower($facing);
         $myRobot = new MyRobot(intval($x), intval($y), new Facing($facing));
 
         $output->writeln('<info>The robot has been placed at: ' . $myRobot->report() . '</info>');
